@@ -1,0 +1,20 @@
+{
+  "allFiles": [
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/java/com/meng/fastboot/MainActivity.kt",
+      "selection": {
+        "end": {
+          "column": 72,
+          "index": 10301,
+          "line": 230
+        },
+        "start": {
+          "column": 72,
+          "index": 10301,
+          "line": 230
+        }
+      }
+    }
+  ],
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/java/com/meng/fastboot/MainActivity.kt"
+}

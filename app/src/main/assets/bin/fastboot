@@ -1,0 +1,14 @@
+#!/system/bin/sh
+# fastboot: wrapper to run fastboot from terminal
+# osm0sis @ xda-developers - modified to remove root check
+
+dir="$(cd "$(dirname "$0")"; pwd)";
+
+case $1 in
+  ""|help|--help|-h) $dir/fastboot.bin --help;;
+  version|--version) $dir/fastboot.bin --version | sed 's/fastboot.bin/fastboot/';;
+  *)
+    # Menjalankan langsung tanpa peduli user root atau bukan
+    $dir/fastboot.bin "$@";
+  ;;
+esac;

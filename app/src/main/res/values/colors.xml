@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_100">#F5F5F5</color>
+    <color name="gray_800">#212121</color>
+    <color name="red_500">#B00020</color>
+    <color name="orange_500">#FF9800</color>
+    <color name="orange_700">#F57C00</color>
+    <color name="red_custom">#F44336</color>
+    <color name="orange_custom">#FF9800</color>
+    <!-- Primary & secondary sesuai tema -->
+    <color name="primary_light">#1E88E5</color>       <!-- biru terang -->
+    <color name="primary_dark">#90CAF9</color>       <!-- biru gelap -->
+    <color name="secondary_light">#43A047</color>    <!-- hijau terang -->
+    <color name="secondary_dark">#81C784</color>     <!-- hijau gelap -->
+
+    <!-- Status / Nav Bar -->
+    <color name="status_nav_light">#1E88E5</color>
+    <color name="status_nav_dark">#121212</color>
+</resources>
