@@ -4,14 +4,59 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/java/com/meng/fastboot/MainActivity.kt",
       "selection": {
         "end": {
-          "column": 72,
-          "index": 10301,
-          "line": 230
+          "column": 62,
+          "index": 22491,
+          "line": 521
         },
         "start": {
-          "column": 72,
-          "index": 10301,
-          "line": 230
+          "column": 62,
+          "index": 22491,
+          "line": 521
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/build.gradle.kts",
+      "selection": {
+        "end": {
+          "column": 57,
+          "index": 478,
+          "line": 20
+        },
+        "start": {
+          "column": 57,
+          "index": 478,
+          "line": 20
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/AndroidManifest.xml",
+      "selection": {
+        "end": {
+          "column": 10,
+          "index": 500,
+          "line": 13
+        },
+        "start": {
+          "column": 10,
+          "index": 500,
+          "line": 13
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/assets/bin/fastboot",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 0,
+          "line": 0
+        },
+        "start": {
+          "column": 0,
+          "index": 0,
+          "line": 0
         }
       }
     }

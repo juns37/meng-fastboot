@@ -34,6 +34,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
 import kotlinx.coroutines.launch
 import java.io.*
 
@@ -126,12 +129,15 @@ fun FastbootAppWithDrawer(binDir: File) {
     val logList = remember { mutableStateListOf<String>() }
     val listState = rememberLazyListState()
 
+    // State untuk dialog konfirmasi format
+    var showFormatConfirm by remember { mutableStateOf(false) }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                drawerContainerColor = MaterialTheme.colorScheme.background,      // Ikut tema
-                drawerContentColor = MaterialTheme.colorScheme.onSurface,      // Ikut tema
+                drawerContainerColor = MaterialTheme.colorScheme.background,
+                drawerContentColor = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.fillMaxHeight()
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
@@ -165,44 +171,43 @@ fun FastbootAppWithDrawer(binDir: File) {
                     )
 
                     val uriHandler = LocalUriHandler.current
-                    val githubLink = "https://github.com/juns37"
+                    val githubLink = "https://github.com/juns37/meng-fastboot"
 
                     val annotatedString = buildAnnotatedString {
                         append("App simpel buat bantu fix HP yang mentok di fastboot/bootloop.\n\n")
                         append("Bisa cek devices, Flash recovery, flash boot/vendor_boot, format data, langsung reboot ke recovery atau system.\n\n")
                         append("Cocok untuk kamu yang suka oprek kapanpun dan dimana saja, Cukup 2 hp, Kabel USB, dan Aplikasi ini.\n\n")
-                        append("Made with ♥ by Juni.\n")
+                        append("Made with ♥ by Juni.\n\n")
 
+                        append("Checkout the source code at ")
                         withStyle(
                             style = SpanStyle(
                                 color = MaterialTheme.colorScheme.primary,
                                 textDecoration = TextDecoration.Underline
                             )
                         ) {
-                            append("Source code ada di Github")
+                            append("Github")
                         }
                     }
 
                     ClickableText(
                         text = annotatedString,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.onSurface
-                        ),
+                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
                         onClick = { offset ->
-                            if (offset >= annotatedString.indexOf("Source code ada di Github") && 
-                                offset <= annotatedString.indexOf("Source code ada di Github") + "Source code ada di Github".length) {
+                            if (offset >= annotatedString.indexOf("Github") && offset <= annotatedString.indexOf("Github") + "Github".length) {
                                 uriHandler.openUri(githubLink)
                             }
                         }
                     )
 
-                    // Kotak Welcome (tetap hijau accent biar standout)
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                         shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFF006400))
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color(0xFF006400)
+                        )
                     ) {
                         Row(
                             modifier = Modifier
@@ -294,21 +299,25 @@ fun FastbootAppWithDrawer(binDir: File) {
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                createMengButton("Fastboot Devices") {
-                    Thread { runCommands(binDir, listOf("fastboot devices"), logList) }.start()
+                createMengButton("Fastboot Device") {
+                    Thread { 
+                        logList.add("Cek Devices...")
+                        runCommands(binDir, listOf("fastboot devices"), logList) 
+                    }.start()
                 }
 
                 createMengButton(
                     text = "Fix Fastboot",
                     backgroundColor = Color(0xFF43A047) // hijau
                 ) {
+                    logList.add("Memulai proses Fix Fastboot...")
                     val bootFile = File("/sdcard/fastboot/boot.img")
                     val vendorBootFile = File("/sdcard/fastboot/vendor_boot.img")
 
                     if (!bootFile.exists() || bootFile.length() == 0L ||
                         !vendorBootFile.exists() || vendorBootFile.length() == 0L
                     ) {
-                        logList.add("❌ File boot.img atau vendor_boot.img tidak ditemukan / kosong. Proses dihentikan.")
+                        logList.add("❌ File boot.img atau vendor_boot.img tidak ditemukan pada folder /sdcard/fastboot/, pastikan namanya sesuai. Proses dihentikan.")
                         return@createMengButton
                     }
 
@@ -320,13 +329,13 @@ fun FastbootAppWithDrawer(binDir: File) {
                         ), logList)
                     }.start()
                 }
-                
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Button(
-                        onClick = { Thread { runCommands(binDir, listOf("fastboot reboot recovery"), logList) }.start() },
+                        onClick = { Thread { logList.add("Reboot Reco..."); runCommands(binDir, listOf("fastboot reboot recovery"), logList) }.start() },
                         modifier = Modifier
                             .weight(1f)
                             .height(56.dp),
@@ -341,7 +350,7 @@ fun FastbootAppWithDrawer(binDir: File) {
                     }
 
                     Button(
-                        onClick = { Thread { runCommands(binDir, listOf("fastboot reboot"), logList) }.start() },
+                        onClick = { Thread { logList.add("Reboot System..."); runCommands(binDir, listOf("fastboot reboot"), logList) }.start() },
                         modifier = Modifier
                             .weight(1f)
                             .height(56.dp),
@@ -355,15 +364,15 @@ fun FastbootAppWithDrawer(binDir: File) {
                         )
                     }
                 }
-
+                
                 createMengButton(
-                    text = "Recovery Flasher",
+                    text = "Recovery Flasher"
                 ) {
-                    val bootFile = File("/sdcard/fastboot/recovery.img")
+                    logList.add("Reco Flasher...")
+                    val recoveryFile = File("/sdcard/fastboot/recovery.img")
 
-                    if (!bootFile.exists() || bootFile.length() == 0L
-                    ) {
-                        logList.add("❌ recovery.img tidak ditemukan / kosong, pastikan namanya sesuai. Proses dihentikan.")
+                    if (!recoveryFile.exists() || recoveryFile.length() == 0L) {
+                        logList.add("❌ recovery.img tidak ditemukan pada folder /sdcard/fastboot/, pastikan namanya sesuai. Proses dihentikan.")
                         return@createMengButton
                     }
 
@@ -379,7 +388,60 @@ fun FastbootAppWithDrawer(binDir: File) {
                     text = "Fastboot Format (-w)",
                     backgroundColor = Color(0xFFE53935)
                 ) {
-                    Thread { runCommands(binDir, listOf("fastboot -w"), logList) }.start()
+                    showFormatConfirm = true
+                }
+
+                // Dialog konfirmasi format
+                if (showFormatConfirm) {
+                    AlertDialog(
+                        onDismissRequest = { showFormatConfirm = false },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = "Peringatan",
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(40.dp)
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Konfirmasi Format Data",
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                        },
+                        text = {
+                            Text(
+                                text = "Perintah ini akan menjalankan 'fastboot -w'.\n" +
+                                       "Ini akan menghapus SELURUH data di /data dan /cache (factory reset).\n\n" +
+                                       "Semua foto, video, aplikasi, akun Google, pengaturan akan hilang permanen!\n\n" +
+                                       "Pastikan perangkat terhubung via USB dan dalam mode fastboot.\n\n" +
+                                       "Yakin ingin melanjutkan?",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        },
+                        confirmButton = {
+                            TextButton(
+                                onClick = {
+                                    showFormatConfirm = false
+                                    logList.add("→ Memulai format data (fastboot -w)...")
+                                    Thread {
+                                        runCommands(binDir, listOf("fastboot -w"), logList)
+                                    }.start()
+                                }
+                            ) {
+                                Text(
+                                    "Ya, Format!",
+                                    color = MaterialTheme.colorScheme.error,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showFormatConfirm = false }) {
+                                Text("Batal")
+                            }
+                        }
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -457,7 +519,6 @@ fun runCommands(
                 logList.add(outputLine)
                 onOutput?.invoke(outputLine)
 
-                // Deteksi error dari output fastboot
                 if (outputLine.contains("FAILED", ignoreCase = true) ||
                     outputLine.contains("error", ignoreCase = true) ||
                     outputLine.contains("waiting for device", ignoreCase = true) ||
@@ -469,14 +530,13 @@ fun runCommands(
 
             val exitCode = process.waitFor()
 
-            // Tambah pesan OK hanya kalau berhasil
             if (exitCode == 0 && !hasErrorInOutput) {
-                logList.add("Sukses!")
+                logList.add("OK")
             } else {
-                logList.add("❌ Gagal (exit code $exitCode)")
+                logList.add("Gagal (exit code $exitCode)")
             }
         } catch (e: Exception) {
-            logList.add("❌ Error menjalankan '$cmd': ${e.message}")
+            logList.add("Error menjalankan '$cmd': ${e.message}")
         }
     }
 }

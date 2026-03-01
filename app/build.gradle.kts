@@ -16,6 +16,9 @@ android {
 
         vectorDrawables {
             useSupportLibrary = true
+            
+        // Hanya include bahasa yang kamu mau
+        resourceConfigurations.addAll(listOf("en", "id"))
         }
     }
 
@@ -64,7 +67,7 @@ buildTypes {
 dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.material3:material3")
 
@@ -78,4 +81,5 @@ dependencies {
     
     // Optional: preview tools in IDE
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
+    
 }
