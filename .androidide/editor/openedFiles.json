@@ -1,65 +1,50 @@
 {
   "allFiles": [
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/java/com/meng/fastboot/MainActivity.kt",
+      "file": "/storage/emulated/0/AndroidIDEProjects/MengFastboot/keystore.properties",
       "selection": {
         "end": {
-          "column": 62,
-          "index": 22491,
-          "line": 521
+          "column": 20,
+          "index": 87,
+          "line": 3
         },
         "start": {
-          "column": 62,
-          "index": 22491,
-          "line": 521
+          "column": 20,
+          "index": 87,
+          "line": 3
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/build.gradle.kts",
+      "file": "/storage/emulated/0/AndroidIDEProjects/MengFastboot/.gitignore",
       "selection": {
         "end": {
-          "column": 57,
-          "index": 478,
-          "line": 20
+          "column": 5,
+          "index": 889,
+          "line": 52
         },
         "start": {
-          "column": 57,
-          "index": 478,
-          "line": 20
+          "column": 5,
+          "index": 889,
+          "line": 52
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/AndroidManifest.xml",
+      "file": "/storage/emulated/0/AndroidIDEProjects/MengFastboot/app/build.gradle.kts",
       "selection": {
         "end": {
-          "column": 10,
-          "index": 500,
-          "line": 13
+          "column": 5,
+          "index": 1902,
+          "line": 68
         },
         "start": {
-          "column": 10,
-          "index": 500,
-          "line": 13
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/assets/bin/fastboot",
-      "selection": {
-        "end": {
-          "column": 0,
-          "index": 0,
-          "line": 0
-        },
-        "start": {
-          "column": 0,
-          "index": 0,
-          "line": 0
+          "column": 5,
+          "index": 1902,
+          "line": 68
         }
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Fix Fastboot/app/src/main/java/com/meng/fastboot/MainActivity.kt"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/MengFastboot/app/build.gradle.kts"
 }

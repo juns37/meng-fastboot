@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -41,21 +44,29 @@ android {
     }
     
     signingConfigs {
-    create("release") {
-        storeFile = file("/sdcard/fastboot-release.jks")
-        storePassword = "Kebument"
-        keyAlias = "fastbootKey"
-        keyPassword = "Kebument"
-    }
-}
+        create("release") {
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            val keystoreProperties = Properties().apply {
+                if (keystorePropertiesFile.exists()) {
+                    load(FileInputStream(keystorePropertiesFile))
+                }
+            }
 
-buildTypes {
-    getByName("release") {
-        signingConfig = signingConfigs.getByName("release") // wajib!
-        isMinifyEnabled = true
-        isShrinkResources = true
+            storeFile = file(keystoreProperties.getProperty("storeFile") ?: "meng-release.jks")  // fallback kalau tidak ada
+            storePassword = keystoreProperties.getProperty("storePassword")
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+        }
     }
-}
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
 
     packaging {
         resources {

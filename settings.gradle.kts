@@ -14,6 +14,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "Fix Fastboot"
+rootProject.name = "MengFastboot"
 
 include(":app")
